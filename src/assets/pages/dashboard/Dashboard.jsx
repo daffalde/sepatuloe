@@ -12,13 +12,10 @@ export default function Dashboard() {
   // cek user
 
   useEffect(() => {
-    try {
-      if (
-        JSON.parse(Cookies.get("user")).$id !== import.meta.env.VITE_ADMIN_ID
-      ) {
-        nav("/");
-      }
-    } catch (e) {
+    if (
+      JSON.parse(Cookies.get("user")).$id !== import.meta.env.VITE_ADMIN_ID ||
+      JSON.parse(Cookies.get("user")).$id == undefined
+    ) {
       nav("/");
     }
   }, []);
