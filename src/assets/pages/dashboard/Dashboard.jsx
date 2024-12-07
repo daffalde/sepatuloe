@@ -12,7 +12,13 @@ export default function Dashboard() {
   // cek user
 
   useEffect(() => {
-    if (JSON.parse(Cookies.get("user")).$id !== import.meta.env.VITE_ADMIN_ID) {
+    try {
+      if (
+        JSON.parse(Cookies.get("user")).$id !== import.meta.env.VITE_ADMIN_ID
+      ) {
+        nav("/");
+      }
+    } catch (e) {
       nav("/");
     }
   }, []);
