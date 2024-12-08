@@ -562,6 +562,14 @@ export default function Produk() {
               <button onClick={() => setProduk(false)}>Cancel</button>
               <button onClick={handleadddata}>Send</button>
             </div>
+            <p>*Penting!</p>
+            <p>1. Ukuran tiap foto harus dibawah 50kb</p>
+            <p>2. Aspect ratio foto harus 1:1</p>
+            <p>3. Penulisan size/ukuran sepatu harus dipisah dengan koma(,)</p>
+            <p>
+              4. Penulisan price/harga tidak perlu titik atau currency,hanya
+              angka saja
+            </p>
           </div>
         </div>
       )}
