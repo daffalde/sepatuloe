@@ -11,6 +11,8 @@ import { account, database } from "./assets/components/Client";
 import Cookies from "js-cookie";
 import axios from "axios";
 import { Query } from "appwrite";
+import Home from "./assets/pages/Home";
+import Store from "./assets/pages/Store";
 
 function App() {
   async function getUser() {
@@ -22,6 +24,7 @@ function App() {
     ) {
       try {
         const resp1 = await account.get();
+        console.log(resp1);
         if (!resp1.emailVerification) {
           await axios.delete(
             `https://cloud.appwrite.io/v1/users/${resp1.$id}`,
@@ -72,6 +75,8 @@ function App() {
           <Route path="/dashboard" Component={Dashboard} />
 
           {/* pages */}
+          <Route path="/" Component={Home} />
+          <Route path="/store" Component={Store} />
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
           <Route path="/otp" Component={Otp} />

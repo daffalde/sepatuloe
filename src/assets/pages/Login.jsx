@@ -70,7 +70,6 @@ export default function Login() {
     if (message) {
       setTimeout(() => {
         setMessage(false);
-        nav("/otp");
       }, 5000);
     }
   }, [message]);

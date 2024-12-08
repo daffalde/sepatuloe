@@ -13,7 +13,7 @@ export default function Dashboard() {
   useEffect(() => {
     try {
       const cookie = JSON.parse(Cookies.get("user"));
-      if (cookie.$id !== "6752c05b033455d53ccc") {
+      if (cookie.user_email !== "daffakihajar@gmail.com") {
         nav("/");
       }
       setUser(cookie);
@@ -33,6 +33,7 @@ export default function Dashboard() {
       console.error(e);
     } finally {
       nav("/");
+      window.location.reload();
     }
   }
   return (
