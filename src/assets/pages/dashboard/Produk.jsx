@@ -255,8 +255,18 @@ export default function Produk() {
     getBrand();
     getCat();
   }, []);
+
+  const [search, setSearch] = useState("");
   return (
     <>
+      <div className="d-search">
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          type="text"
+          placeholder="Search Product...."
+        />
+      </div>
       <div className="d-in2">
         <div className="d-i-head">
           <div onClick={() => setProduk(true)} className="d-i-h-content">
@@ -294,54 +304,58 @@ export default function Produk() {
                 </tr>
               </thead>
               <tbody>
-                {data.map((e, i) => (
-                  <tr key={i}>
-                    <td>{e.$id}</td>
-                    <td>
-                      <span className="d-i-c-t1">
-                        <img
-                          width={"100px"}
-                          src={storage.getFilePreview(
-                            import.meta.env.VITE_APPWRITE_BUCKET,
-                            e.product_detail[0].p_detail_image
-                          )}
-                          alt="img product"
-                        />
-                        <p>{e.product_name}</p>
-                      </span>
-                    </td>
-                    <td>{formatCurrency(e.product_price)}</td>
-                    <td>{e.product_brand.p_brand_name}</td>
-                    <td>
-                      <div className="d-i-c-t2">
-                        {e.product_category.map((e, i) => (
-                          <p key={i}>{e.p_category_name}</p>
-                        ))}
-                      </div>
-                    </td>
-                    <td>{e.product_size.join(",")}</td>
-                    <td>
-                      {e.product_detail.map((detail, i) => (
-                        <span key={i}>
-                          {" "}
-                          {detail.p_detail_color}
-                          {i < e.product_detail.length - 1 ? ", " : ""}{" "}
+                {data
+                  .filter((e) =>
+                    e.product_name.toLowerCase().includes(search.toLowerCase())
+                  )
+                  .map((e, i) => (
+                    <tr key={i}>
+                      <td>{e.$id}</td>
+                      <td>
+                        <span className="d-i-c-t1">
+                          <img
+                            width={"100px"}
+                            src={storage.getFilePreview(
+                              import.meta.env.VITE_APPWRITE_BUCKET,
+                              e.product_detail[0].p_detail_image
+                            )}
+                            alt="img product"
+                          />
+                          <p>{e.product_name}</p>
                         </span>
-                      ))}
-                    </td>
-                    <td>
-                      <div className="d-i-c-t3">{e.product_desc}</div>
-                    </td>
-                    <td>
-                      <button
-                        onClick={() => handleDelete(e.$id)}
-                        className="table-button"
-                      >
-                        Delete
-                      </button>
-                    </td>
-                  </tr>
-                ))}
+                      </td>
+                      <td>{formatCurrency(e.product_price)}</td>
+                      <td>{e.product_brand.p_brand_name}</td>
+                      <td>
+                        <div className="d-i-c-t2">
+                          {e.product_category.map((e, i) => (
+                            <p key={i}>{e.p_category_name}</p>
+                          ))}
+                        </div>
+                      </td>
+                      <td>{e.product_size.join(",")}</td>
+                      <td>
+                        {e.product_detail.map((detail, i) => (
+                          <span key={i}>
+                            {" "}
+                            {detail.p_detail_color}
+                            {i < e.product_detail.length - 1 ? ", " : ""}{" "}
+                          </span>
+                        ))}
+                      </td>
+                      <td>
+                        <div className="d-i-c-t3">{e.product_desc}</div>
+                      </td>
+                      <td>
+                        <button
+                          onClick={() => handleDelete(e.$id)}
+                          className="table-button"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
               </tbody>
             </table>
           )}

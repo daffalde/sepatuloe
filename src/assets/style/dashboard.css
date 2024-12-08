@@ -111,6 +111,20 @@
   background-color: #d70000;
 }
 
+/* ________________________________________search */
+.d-search {
+  width: 100%;
+  height: 70px;
+  padding: 20px 20px 0 20px;
+}
+.d-search input {
+  width: 100%;
+  height: 100%;
+  font-size: 16px;
+  padding: 0 5px;
+  border: 2px solid var(--black-low);
+  border-radius: 3px;
+}
 .d-in {
   width: calc(100% - 40px);
   overflow: auto;

@@ -22,7 +22,6 @@ function App() {
     ) {
       try {
         const resp1 = await account.get();
-
         if (!resp1.emailVerification) {
           await axios.delete(
             `https://cloud.appwrite.io/v1/users/${resp1.$id}`,

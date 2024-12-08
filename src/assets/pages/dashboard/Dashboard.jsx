@@ -3,23 +3,24 @@ import { useNavigate } from "react-router-dom";
 import "../../style/dashboard.css";
 import { useEffect, useState } from "react";
 import { account, storage } from "../../components/Client";
-import { use } from "react";
 import User from "./User";
 import Produk from "./Produk";
 
 export default function Dashboard() {
   const nav = useNavigate();
   // cek user
-
+  const [user, setUser] = useState({});
   useEffect(() => {
-    if (
-      JSON.parse(Cookies.get("user")).$id !== import.meta.env.VITE_ADMIN_ID ||
-      JSON.parse(Cookies.get("user")).$id == undefined
-    ) {
+    try {
+      const cookie = JSON.parse(Cookies.get("user"));
+      if (cookie.$id !== "6752c05b033455d53ccc") {
+        nav("/");
+      }
+      setUser(cookie);
+    } catch (e) {
       nav("/");
     }
   }, []);
-  const user = JSON.parse(Cookies.get("user"));
   const [select, setSelect] = useState("User");
   const [profile, setProfile] = useState(false);
 
@@ -31,7 +32,7 @@ export default function Dashboard() {
     } catch (e) {
       console.error(e);
     } finally {
-      window.location.reload();
+      nav("/");
     }
   }
   return (
@@ -44,7 +45,7 @@ export default function Dashboard() {
           <br />
           <button
             onClick={() => setSelect("User")}
-            style={{ backgroundColor: `${select == "User" ? "#363779" : ""}` }}
+            style={{ backgroundColor: `${select === "User" ? "#363779" : ""}` }}
             className="d-n-button"
           >
             <img src="./d-user.svg" alt="user" width={"20px"} />
@@ -53,7 +54,7 @@ export default function Dashboard() {
           <button
             onClick={() => setSelect("Produk")}
             style={{
-              backgroundColor: `${select == "Produk" ? "#363779" : ""}`,
+              backgroundColor: `${select === "Produk" ? "#363779" : ""}`,
             }}
             className="d-n-button"
           >
@@ -68,7 +69,7 @@ export default function Dashboard() {
               <img
                 width={"50px"}
                 src={`${
-                  user.user_image !== null
+                  user.user_image
                     ? storage.getFilePreview(
                         import.meta.env.VITE_APPWRITE_BUCKET,
                         user.user_image
@@ -77,7 +78,7 @@ export default function Dashboard() {
                 }`}
                 alt="profil"
               />
-              <p>{user.user_name}</p>
+              <p>{user.user_name || "Guest"}</p>
               <img width={"25px"} src="./d-arrowdown.svg" alt="arrow" />
             </div>
             {profile && (
@@ -91,7 +92,7 @@ export default function Dashboard() {
                     }}
                     width={"70px"}
                     src={`${
-                      user.user_image !== null
+                      user.user_image
                         ? storage.getFilePreview(
                             import.meta.env.VITE_APPWRITE_BUCKET,
                             user.user_image
@@ -101,8 +102,8 @@ export default function Dashboard() {
                     alt="profil"
                   />
                   <span>
-                    <h6>{user.user_name}</h6>
-                    <p>{user.user_email}</p>
+                    <h6>{user.user_name || "Guest"}</h6>
+                    <p>{user.user_email || "No Email"}</p>
                   </span>
                 </div>
                 <br />
@@ -113,7 +114,11 @@ export default function Dashboard() {
               </div>
             )}
           </div>
-          {select == "User" ? <User /> : select == "Produk" ? <Produk /> : null}
+          {select === "User" ? (
+            <User />
+          ) : select === "Produk" ? (
+            <Produk />
+          ) : null}
         </div>
       </div>
     </>
