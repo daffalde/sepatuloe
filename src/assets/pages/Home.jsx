@@ -1,3 +1,4 @@
+import Footer from "../components/Footer";
 import Navbar from "../components/Navbar";
 
 export default function Home() {
@@ -8,6 +9,7 @@ export default function Home() {
       <div className="container">
         <h1>Home</h1>
       </div>
+      <Footer />
     </>
   );
 }

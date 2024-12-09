@@ -12,7 +12,6 @@ export default function Navbar() {
     try {
       const cookie = Cookies.get("user");
       setUserdata(JSON.parse(cookie));
-      setUser(true);
     } catch (e) {
       console.log(e);
     }
