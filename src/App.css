@@ -237,14 +237,14 @@ p {
   transition: 0.3s;
 }
 .n-menu button:nth-child(2) {
-  border: 2px solid var(--black);
+  border: 2px solid var(--black-low);
   display: flex;
   justify-content: center;
   align-items: center;
   transition: 0.3s;
 }
 .n-menu button:nth-child(2):hover {
-  border: 2px solid var(--brown-2);
+  border: 2px solid var(--brown);
   box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
   transition: 0.3s;
 }

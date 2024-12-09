@@ -36,8 +36,6 @@ export default function Store() {
     }
   }
 
-  // get category & brand
-
   // filter
   const [selectcat, setSelectcat] = useState("");
   const [selectbrand, setSelectbrand] = useState("");
@@ -142,7 +140,7 @@ export default function Store() {
                   <div key={i} className="s-b-wrap">
                     <div className="s-b-item">
                       <div className="s-b-i-bg">
-                        <div>add to cart</div>
+                        <div>View product</div>
                       </div>
                       <img
                         style={{

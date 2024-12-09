@@ -69,6 +69,12 @@ export default function Dashboard() {
             <div onClick={() => setProfile(!profile)} className="d-c-h-profil">
               <img
                 width={"50px"}
+                style={{
+                  aspectRatio: "1/1",
+                  borderRadius: "50%",
+                  objectFit: "cover",
+                  objectPosition: "center",
+                }}
                 src={`${
                   user.user_image
                     ? storage.getFilePreview(
