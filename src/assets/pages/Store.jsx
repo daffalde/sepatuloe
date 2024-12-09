@@ -18,7 +18,6 @@ export default function Store() {
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_PRODUCT
       );
-      console.log(resp.documents);
       setDataproduct(resp.documents);
       const resp2 = await database.listDocuments(
         import.meta.env.VITE_APPWRITE_DATABASE,
@@ -49,6 +48,14 @@ export default function Store() {
     getProduct();
     console.log(selectcat);
   }, []);
+
+  // pagignation
+  const [page, setPage] = useState(1);
+  const maxItem = 20;
+
+  const lastIndex = page * maxItem;
+  const firstIndex = lastIndex - maxItem;
+  const itemList = dataproduct.slice(firstIndex, lastIndex);
   return (
     <>
       <Navbar />
@@ -106,7 +113,7 @@ export default function Store() {
               />
             </div>
             <div className="s-body">
-              {dataproduct
+              {itemList
                 .sort((a, b) =>
                   selectsort == "baru"
                     ? new Date(b.$createdAt) - new Date(a.$createdAt)
@@ -184,6 +191,37 @@ export default function Store() {
                     </div>
                   </div>
                 ))}
+            </div>
+            <div className="pagignation">
+              <button
+                className="pagig-button "
+                onClick={() => (page > 1 ? setPage(page - 1) : null)}
+              >
+                <img src="./left.svg" alt="left arrow" width={"20px"} />
+              </button>
+              {Array.from({
+                length: Math.ceil(dataproduct.length / maxItem),
+              }).map((e, i) => (
+                <button
+                  className={`pagig-button ${
+                    i + 1 == page ? "pagig-button-on" : ""
+                  }`}
+                  onClick={() => setPage(i + 1)}
+                  key={i}
+                >
+                  {i + 1}
+                </button>
+              ))}
+              <button
+                className="pagig-button "
+                onClick={() =>
+                  page < Math.ceil(dataproduct.length / maxItem)
+                    ? setPage(page + 1)
+                    : null
+                }
+              >
+                <img src="./right.svg" alt="right arrow" width={"20px"} />
+              </button>
             </div>
           </div>
         )}
