@@ -24,7 +24,6 @@ export default function Product() {
         paramId
       );
       setProduct(resp);
-      console.log(resp);
     } catch (e) {
       console.error(e);
     } finally {
@@ -40,7 +39,6 @@ export default function Product() {
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_PRODUCT
       );
-      console.log(`hoho`, resp.documents);
       setAllProduct(resp.documents);
     } catch (e) {
       console.error(e);
