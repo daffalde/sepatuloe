@@ -7,10 +7,11 @@ export default function Home() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const cookie = Cookies.get("reload");
     setLoading(true);
-    if (Cookies.get("reload")) {
+    if (cookie) {
       const timer = setTimeout(() => {
-        if (Cookies.get("reload")) {
+        if (cookie) {
           try {
             window.location.reload();
           } catch (e) {
@@ -22,7 +23,7 @@ export default function Home() {
         } else {
           setLoading(false);
         }
-      }, 5000);
+      }, 3000);
       return () => clearTimeout(timer);
     } else {
       setLoading(false);
