@@ -25,9 +25,9 @@ export default function Navbar() {
   //   logout
   async function handelLogout() {
     try {
+      await account.deleteSessions();
       Cookies.remove("user");
       Cookies.remove("reload");
-      await account.deleteSessions();
     } catch (e) {
       console.error(e);
     } finally {
@@ -130,7 +130,7 @@ export default function Navbar() {
                 </button>
               )
             ) : Cookies.get("reload") ? (
-              <button onClick={() => window.location.reload()}>
+              <button onClick={() => nav("/login")}>
                 <img
                   src={`${
                     userdata && userdata.user_image
