@@ -138,14 +138,7 @@ export default function Store() {
                 )
                 .map((e, i) => (
                   <div
-                    onClick={() =>
-                      window.open(
-                        `${
-                          import.meta.env.VITE_MAINURL ||
-                          "https://sepatuloe.vercel.app/"
-                        }store/${e.$id}`
-                      )
-                    }
+                    onClick={() => window.open(`/store/${e.$id}`)}
                     key={i}
                     className="s-b-wrap"
                   >
