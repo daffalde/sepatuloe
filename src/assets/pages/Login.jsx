@@ -61,7 +61,7 @@ export default function Login() {
     try {
       await account.createRecovery(
         email.current.value,
-        "http://localhost:5173/login"
+        `${import.meta.env.VITE_DOMAIN}login`
       );
     } catch (e) {
       console.error(e);
