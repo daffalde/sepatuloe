@@ -5,6 +5,7 @@ import { account, storage } from "./Client";
 
 export default function Navbar() {
   const nav = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   //   get user
   const [userdata, setUserdata] = useState(null);
@@ -25,6 +26,7 @@ export default function Navbar() {
   async function handelLogout() {
     try {
       Cookies.remove("user");
+      Cookies.remove("reload");
       await account.deleteSessions();
     } catch (e) {
       console.error(e);
@@ -67,7 +69,68 @@ export default function Navbar() {
               <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
             {userdata ? (
-              <button onClick={() => setProfil(!profil)}>
+              userdata && userdata.user_image ? (
+                <button onClick={() => setProfil(!profil)}>
+                  <img
+                    src={`${storage.getFilePreview(
+                      import.meta.env.VITE_APPWRITE_BUCKET,
+                      userdata.user_image
+                    )}`}
+                    alt="user"
+                    width={"30px"}
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      aspectRatio: "1/1",
+                      borderRadius: "3px",
+                    }}
+                  />
+                </button>
+              ) : Cookies.get("reload") ? (
+                <button onClick={() => setProfil(!profil)}>
+                  <img
+                    src={`${
+                      userdata && userdata.user_image
+                        ? storage.getFilePreview(
+                            import.meta.env.VITE_APPWRITE_BUCKET,
+                            userdata.user_image
+                          )
+                        : "../user.svg"
+                    }`}
+                    alt="user"
+                    width={"30px"}
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      aspectRatio: "1/1",
+                      borderRadius: "3px",
+                    }}
+                  />
+                </button>
+              ) : (
+                <button onClick={() => setProfil(!profil)}>
+                  <img
+                    src={`${
+                      userdata && userdata.user_image
+                        ? storage.getFilePreview(
+                            import.meta.env.VITE_APPWRITE_BUCKET,
+                            userdata.user_image
+                          )
+                        : "../user.svg"
+                    }`}
+                    alt="user"
+                    width={"30px"}
+                    style={{
+                      objectFit: "cover",
+                      objectPosition: "center",
+                      aspectRatio: "1/1",
+                      borderRadius: "3px",
+                    }}
+                  />
+                </button>
+              )
+            ) : Cookies.get("reload") ? (
+              <button onClick={() => window.location.reload()}>
                 <img
                   src={`${
                     userdata && userdata.user_image
