@@ -142,7 +142,7 @@ export default function Store() {
                       window.open(
                         `${
                           import.meta.env.VITE_MAINURL ||
-                          import.meta.env.VITE_MAINURL
+                          "https://sepatuloe.vercel.app/"
                         }store/${e.$id}`
                       )
                     }
