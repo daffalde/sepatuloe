@@ -13,7 +13,10 @@ export default function Dashboard() {
   useEffect(() => {
     try {
       const cookie = JSON.parse(Cookies.get("user"));
-      if (cookie.user_email !== "daffakihajar@gmail.com") {
+      if (
+        cookie.user_email !== "daffakihajar@gmail.com" ||
+        "fazren2410@gmail.com"
+      ) {
         nav("/");
       }
       setUser(cookie);
