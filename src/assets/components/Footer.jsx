@@ -104,21 +104,21 @@ export default function Footer() {
             <p>©2024 SepatuLoe.All rights reserved.</p>
             <span>
               <img
-                src="./fb.svg"
+                src="../fb.svg"
                 alt="fb"
                 width={"20px"}
                 onClick={() => window.open("https://www.facebook.com/")}
                 style={{ cursor: "pointer" }}
               />
               <img
-                src="./twt.svg"
+                src="../twt.svg"
                 alt="fb"
                 width={"20px"}
                 onClick={() => window.open("https://www.twitter.com")}
                 style={{ cursor: "pointer" }}
               />
               <img
-                src="./ig.svg"
+                src="../ig.svg"
                 alt="fb"
                 width={"20px"}
                 onClick={() => window.open("https://www.instagram.com/")}

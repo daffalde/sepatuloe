@@ -13,6 +13,7 @@ import axios from "axios";
 import { Query } from "appwrite";
 import Home from "./assets/pages/Home";
 import Store from "./assets/pages/Store";
+import Product from "./assets/pages/Product";
 
 function App() {
   async function getUser() {
@@ -76,6 +77,7 @@ function App() {
           {/* pages */}
           <Route path="/" Component={Home} />
           <Route path="/store" Component={Store} />
+          <Route path="/store/:id" Component={Product} />
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
           <Route path="/otp" Component={Otp} />

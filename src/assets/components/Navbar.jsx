@@ -49,14 +49,14 @@ export default function Navbar() {
           </ul>
           <img
             style={{ cursor: "pointer" }}
-            src="./logo.svg"
+            src="../logo.svg"
             alt="logo"
             draggable={false}
             onClick={() => nav("/")}
           />
           <div className="n-menu">
             <button onClick={() => setCart(true)}>
-              <img src="./cart.svg" alt="cart" width={"30px"} />
+              <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
             {userdata ? (
               <button onClick={() => setProfil(!profil)}>
@@ -67,7 +67,7 @@ export default function Navbar() {
                           import.meta.env.VITE_APPWRITE_BUCKET,
                           userdata.user_image
                         )
-                      : "./user.svg"
+                      : "../user.svg"
                   }`}
                   alt="user"
                   width={"30px"}
@@ -96,7 +96,7 @@ export default function Navbar() {
                             import.meta.env.VITE_APPWRITE_BUCKET,
                             userdata.user_image
                           )
-                        : "./user.svg"
+                        : "../user.svg"
                     }`}
                     alt="profil"
                   />
@@ -107,11 +107,11 @@ export default function Navbar() {
                 </div>
                 <div className="n-p-bottom">
                   <button>
-                    <img src="./setting.svg" alt="setting" width={"20px"} />
+                    <img src="../setting.svg" alt="setting" width={"20px"} />
                     Setting
                   </button>
                   <button onClick={handelLogout}>
-                    <img src="./signout.svg" alt="signout" width={"20px"} />
+                    <img src="../signout.svg" alt="signout" width={"20px"} />
                     Sign Out
                   </button>
                 </div>
@@ -131,7 +131,7 @@ export default function Navbar() {
           <img
             onClick={() => setCart(false)}
             style={{ cursor: "pointer" }}
-            src="./close.svg"
+            src="../close.svg"
             alt="close"
             width={"50px"}
           />

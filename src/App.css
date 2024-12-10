@@ -12,6 +12,7 @@ body {
   display: grid;
   background-color: var(--white);
   color: var(--black);
+  overflow-x: hidden;
 }
 :root {
   --white: #faf7f0;
@@ -23,6 +24,10 @@ body {
   --black-low: rgb(74, 73, 71, 0.3);
   --red: #ff2323;
   --red-dark: #d70000;
+}
+
+.error-font {
+  color: var(--red);
 }
 
 h1 {

@@ -6,7 +6,7 @@ import { formatCurrency } from "../components/Currency";
 import Footer from "../components/Footer";
 
 export default function Store() {
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   // get data product
   const [dataproduct, setDataproduct] = useState([]);
   const [cat, setCat] = useState([]);
@@ -137,7 +137,15 @@ export default function Store() {
                     .includes(selectbrand.toLocaleLowerCase())
                 )
                 .map((e, i) => (
-                  <div key={i} className="s-b-wrap">
+                  <div
+                    onClick={() =>
+                      window.open(
+                        `${import.meta.env.VITE_MAINURL}store/${e.$id}`
+                      )
+                    }
+                    key={i}
+                    className="s-b-wrap"
+                  >
                     <div className="s-b-item">
                       <div className="s-b-i-bg">
                         <div>View product</div>
