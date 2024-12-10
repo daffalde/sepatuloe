@@ -140,7 +140,10 @@ export default function Store() {
                   <div
                     onClick={() =>
                       window.open(
-                        `${import.meta.env.VITE_MAINURL}store/${e.$id}`
+                        `${
+                          import.meta.env.VITE_MAINURL ||
+                          import.meta.env.VITE_MAINURL
+                        }store/${e.$id}`
                       )
                     }
                     key={i}
