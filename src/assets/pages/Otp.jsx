@@ -11,6 +11,10 @@ export default function Otp() {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    Cookies.get("user") ? nav("/") : null;
+  }, []);
+
+  useEffect(() => {
     setId(Cookies.get("otpid"));
   }, []);
 

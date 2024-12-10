@@ -7,6 +7,10 @@ export default function Recovery() {
   const nav = useNavigate();
   const [cek, setCek] = useState(false);
 
+  useEffect(() => {
+    Cookies.get("user") ? nav("/") : null;
+  }, []);
+
   //   get param query
   const queryparam = new URLSearchParams(window.location.search);
   const userid = queryparam.get("userId");

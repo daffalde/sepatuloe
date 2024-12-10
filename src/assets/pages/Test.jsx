@@ -32,7 +32,9 @@ export default function Test() {
   // logout
   async function logout() {
     try {
+      Cookies.remove("user");
       await account.deleteSessions();
+      Cookies.remove("user");
     } catch (e) {
       console.error(e);
     }

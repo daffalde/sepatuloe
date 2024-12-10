@@ -7,7 +7,7 @@ export default function Navbar() {
   const nav = useNavigate();
 
   //   get user
-  const [userdata, setUserdata] = useState(null); // Inisialisasi dengan null
+  const [userdata, setUserdata] = useState(null);
   useEffect(() => {
     try {
       const cookie = Cookies.get("user");
@@ -55,7 +55,15 @@ export default function Navbar() {
             onClick={() => nav("/")}
           />
           <div className="n-menu">
-            <button onClick={() => setCart(true)}>
+            <button
+              onClick={() => {
+                if (!userdata) {
+                  nav("/login");
+                } else {
+                  setCart(true);
+                }
+              }}
+            >
               <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
             {userdata ? (
@@ -135,7 +143,7 @@ export default function Navbar() {
             alt="close"
             width={"50px"}
           />
-          <h5>Keranjang</h5>
+          <h5>Cart</h5>
           <div style={{ width: "50px" }} className="random"></div>
         </div>
       </div>

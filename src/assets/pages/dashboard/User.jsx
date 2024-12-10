@@ -153,7 +153,7 @@ export default function User() {
             </thead>
             <tbody>
               {data
-                .filter((e) => e.$id !== import.meta.env.VITE_ADMIN_ID)
+                .filter((e) => e.user_email !== import.meta.env.VITE_ADMIN)
                 .filter(
                   (e) =>
                     e.user_name.toLowerCase().includes(search.toLowerCase()) ||

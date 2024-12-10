@@ -3,6 +3,7 @@ import "../style/auth.css";
 import { useEffect, useRef, useState } from "react";
 import { account } from "../components/Client";
 import { OAuthProvider } from "appwrite";
+import Cookies from "js-cookie";
 
 export default function Login() {
   const nav = useNavigate();
@@ -10,6 +11,11 @@ export default function Login() {
   const email = useRef("");
   const pass = useRef("");
   const [loading, setLoading] = useState(false);
+
+  // cek auth
+  useEffect(() => {
+    Cookies.get("user") ? nav("/") : null;
+  }, []);
 
   //   handle error
   const [error, setError] = useState(false);
@@ -19,12 +25,13 @@ export default function Login() {
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
+    Cookies.set("reload", "1");
     try {
       await account.createEmailPasswordSession(
         email.current.value,
         pass.current.value
       );
-      open("/");
+      nav("/");
     } catch (e) {
       setError(true);
       setPesanerror(e.message);
@@ -35,6 +42,7 @@ export default function Login() {
 
   //   signup oauth
   async function handleoauth() {
+    Cookies.set("reload", "1");
     try {
       await account.createOAuth2Session(
         OAuthProvider.Google,

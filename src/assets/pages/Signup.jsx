@@ -13,6 +13,10 @@ export default function Signup() {
   const email = useRef("");
   const pass = useRef("");
 
+  useEffect(() => {
+    Cookies.get("user") ? nav("/") : null;
+  }, []);
+
   //   handle error
   const [error, setError] = useState(false);
   const [pesanerror, setPesanerror] = useState("");
