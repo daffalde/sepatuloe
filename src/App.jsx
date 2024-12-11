@@ -6,7 +6,7 @@ import Login from "./assets/pages/Login";
 import Signup from "./assets/pages/Signup";
 import Otp from "./assets/pages/Otp";
 import Recovery from "./assets/pages/Recovery";
-import { useEffect } from "react";
+import { createContext, useEffect, useState } from "react";
 import { account, database } from "./assets/components/Client";
 import Cookies from "js-cookie";
 import axios from "axios";
@@ -24,7 +24,10 @@ function App() {
       window.location.pathname !== "/otp"
     ) {
       try {
+        // get user login data
         const resp1 = await account.get();
+        Cookies.set("id", resp1.$id);
+        // delete account if no verification
         if (!resp1.emailVerification) {
           await axios.delete(
             `https://cloud.appwrite.io/v1/users/${resp1.$id}`,
@@ -38,11 +41,14 @@ function App() {
             }
           );
         } else {
+          // take user from account.get() $id
           const cekUser = await database.listDocuments(
             import.meta.env.VITE_APPWRITE_DATABASE,
             import.meta.env.VITE_APPWRITE_USER,
             [Query.contains("$id", resp1.$id)]
           );
+
+          // if there is no data on table user,it will be create.if no just skip it
           if (cekUser.total == 0) {
             const resp2 = await database.createDocument(
               import.meta.env.VITE_APPWRITE_DATABASE,

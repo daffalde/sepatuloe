@@ -1,41 +1,34 @@
 import { createClient } from "@supabase/supabase-js";
 import { Client } from "appwrite";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { account, database } from "../components/Client";
 import Cookies from "js-cookie";
-import axios from "axios";
 
 export default function Test() {
-  const [data, setData] = useState();
-  async function getProduk() {
-    try {
-      const resp = await account.get();
-      Cookies.set("tes", JSON.stringify(resp));
-      try {
-        const a = JSON.parse(Cookies.get("tes"));
-        setData(a);
-      } catch (e) {
-        console.log("ini error");
-      }
-    } catch (e) {
-      console.log(e);
-    }
-  }
-  useEffect(() => {
-    getProduk();
-  }, []);
-
   function tombol() {
-    console.log(data);
+    console.log(account.get());
   }
 
+  useEffect(() => {
+    async function as() {
+      try {
+        const resp = await database.listDocuments(
+          import.meta.env.VITE_APPWRITE_DATABASE,
+          import.meta.env.VITE_APPWRITE_PRODUCT
+        );
+        console.log(resp);
+      } catch (e) {
+        console.log(e);
+      }
+    }
+    as();
+  }, []);
   // logout
   async function logout() {
     try {
+      Cookies.remove("user");
+      Cookies.remove("reload");
       await account.deleteSessions();
-      Cookies.remove("user");
-
-      Cookies.remove("user");
     } catch (e) {
       console.error(e);
     }

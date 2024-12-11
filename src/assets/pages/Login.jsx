@@ -42,7 +42,7 @@ export default function Login() {
 
   //   signup oauth
   async function handleoauth() {
-    Cookies.set("reload", "1");
+    Cookies.set("id", "1");
     try {
       await account.createOAuth2Session(
         OAuthProvider.Google,

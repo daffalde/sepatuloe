@@ -1,21 +1,53 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
-import { account, storage } from "./Client";
+import { account, database, storage } from "./Client";
+import { Query } from "appwrite";
+import { formatCurrency } from "./Currency";
 
 export default function Navbar() {
   const nav = useNavigate();
-  const [loading, setLoading] = useState(true);
 
   //   get user
   const [userdata, setUserdata] = useState(null);
-  useEffect(() => {
+  async function getUser() {
     try {
-      const cookie = Cookies.get("user");
-      setUserdata(JSON.parse(cookie));
+      const cookie = Cookies.get("id");
+      const resp = await database.getDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE,
+        import.meta.env.VITE_APPWRITE_USER,
+        cookie
+      );
+      setUserdata(resp ? resp : null);
     } catch (e) {
-      console.log(e);
+      console.error(e);
     }
+  }
+  useEffect(() => {
+    getUser();
+  }, []);
+
+  // get cart
+  const [cartData, setCartData] = useState([]);
+  async function getCart() {
+    try {
+      const resp = await database.listDocuments(
+        import.meta.env.VITE_APPWRITE_DATABASE,
+        import.meta.env.VITE_APPWRITE_CART
+      );
+      console.log(resp.documents);
+      const filter = resp.documents.filter(
+        (e) => e.user.$id == "6753209837b7b7bd4c19"
+      );
+      console.log("filter", filter);
+      setCartData(resp.documents);
+    } catch (e) {
+      console.error(e);
+    }
+  }
+
+  useEffect(() => {
+    getCart();
   }, []);
 
   //   fungsi menu
@@ -25,15 +57,19 @@ export default function Navbar() {
   //   logout
   async function handelLogout() {
     try {
-      await account.deleteSessions();
       Cookies.remove("user");
-      Cookies.remove("reload");
+      Cookies.remove("id");
+      await account.deleteSessions();
     } catch (e) {
       console.error(e);
     } finally {
       window.location.reload();
     }
   }
+
+  // cart function
+  const [quantity, setQuantity] = useState(1);
+
   return (
     <>
       <div className="navbar-container">
@@ -63,74 +99,19 @@ export default function Navbar() {
                   nav("/login");
                 } else {
                   setCart(true);
+                  getCart();
                 }
               }}
             >
               <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
-            {userdata ? (
-              userdata && userdata.user_image ? (
-                <button onClick={() => setProfil(!profil)}>
-                  <img
-                    src={`${storage.getFilePreview(
-                      import.meta.env.VITE_APPWRITE_BUCKET,
-                      userdata.user_image
-                    )}`}
-                    alt="user"
-                    width={"30px"}
-                    style={{
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      aspectRatio: "1/1",
-                      borderRadius: "3px",
-                    }}
-                  />
-                </button>
-              ) : Cookies.get("reload") ? (
-                <button onClick={() => setProfil(!profil)}>
-                  <img
-                    src={`${
-                      userdata && userdata.user_image
-                        ? storage.getFilePreview(
-                            import.meta.env.VITE_APPWRITE_BUCKET,
-                            userdata.user_image
-                          )
-                        : "../user.svg"
-                    }`}
-                    alt="user"
-                    width={"30px"}
-                    style={{
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      aspectRatio: "1/1",
-                      borderRadius: "3px",
-                    }}
-                  />
-                </button>
-              ) : (
-                <button onClick={() => setProfil(!profil)}>
-                  <img
-                    src={`${
-                      userdata && userdata.user_image
-                        ? storage.getFilePreview(
-                            import.meta.env.VITE_APPWRITE_BUCKET,
-                            userdata.user_image
-                          )
-                        : "../user.svg"
-                    }`}
-                    alt="user"
-                    width={"30px"}
-                    style={{
-                      objectFit: "cover",
-                      objectPosition: "center",
-                      aspectRatio: "1/1",
-                      borderRadius: "3px",
-                    }}
-                  />
-                </button>
-              )
-            ) : Cookies.get("reload") ? (
-              <button onClick={() => nav("/login")}>
+            {Cookies.get("id") ? (
+              <button
+                onClick={() => {
+                  setProfil(!profil);
+                  getUser();
+                }}
+              >
                 <img
                   src={`${
                     userdata && userdata.user_image
@@ -153,6 +134,7 @@ export default function Navbar() {
             ) : (
               <Link to={"/login"}>Sign in</Link>
             )}
+
             {/* __________________________________ */}
             {profil && (
               <div className="navbar-profile">
@@ -208,6 +190,48 @@ export default function Navbar() {
           />
           <h5>Cart</h5>
           <div style={{ width: "50px" }} className="random"></div>
+        </div>
+        <div className="n-c-body">
+          {cartData
+            ? cartData
+                .filter((e) => e.user.$id == Cookies.get("id"))
+                .map((e, i) => (
+                  <div key={i} className="n-c-b-list">
+                    <img
+                      style={{ borderRadius: "5px" }}
+                      src={storage.getFilePreview(
+                        import.meta.env.VITE_APPWRITE_BUCKET,
+                        e.product.product_detail[0].p_detail_image
+                      )}
+                      alt="img"
+                      width={"100px"}
+                    />
+
+                    <div className="n-c-b-l-desc">
+                      <h6>{e.product.product_name}</h6>
+                      <p>{formatCurrency(e.product.product_price)}</p>
+                      <br />
+                      <p style={{ fontSize: "14px" }}>
+                        {e.cart_size} | {e.cart_color}
+                      </p>
+                    </div>
+                    <div className="n-c-b-l-action">
+                      <button className="n-c-b-l-a-delete">Delete</button>
+                      <br />
+                      <br />
+                      <div className="n-c-b-l-a-quantity">
+                        <button>
+                          <img src="../minus.svg" alt="minus" width={"20px"} />
+                        </button>
+                        <p>{e.cart_quanitity}</p>
+                        <button>
+                          <img src="../plus.svg" alt="plus" width={"20px"} />
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                ))
+            : null}
         </div>
       </div>
       {/* ____________________________________________________________ */}

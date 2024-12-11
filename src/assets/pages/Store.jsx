@@ -54,6 +54,7 @@ export default function Store() {
   const lastIndex = page * maxItem;
   const firstIndex = lastIndex - maxItem;
   const itemList = dataproduct.slice(firstIndex, lastIndex);
+
   return (
     <>
       <Navbar />
@@ -120,7 +121,7 @@ export default function Store() {
                     : selectsort == "mahal"
                     ? b.product_price - a.product_price
                     : selectsort == "best"
-                    ? b.product_review.length - a.product_review.length
+                    ? b.review.length - a.review.length
                     : null
                 )
                 .filter((e) =>
@@ -161,14 +162,14 @@ export default function Store() {
                       <div className="s-b-i-wrap">
                         <h6>{e.product_name}</h6>
                         {/* star________________________ */}
-                        {e.product_review.length !== 0 ? (
+                        {e.review.length !== 0 ? (
                           <div className="s-b-i-star">
                             {Array.from({
                               length:
-                                e.product_review.reduce(
+                                e.review.reduce(
                                   (a, b) => a + b.p_review_star,
                                   0
-                                ) / e.product_review.length,
+                                ) / e.review.length,
                             }).map((e, i) => (
                               <img
                                 width={"20px"}
@@ -178,10 +179,12 @@ export default function Store() {
                               />
                             ))}
                             <p>
-                              {e.product_review.reduce(
-                                (a, b) => a + b.p_review_star,
-                                0
-                              ) / e.product_review.length}
+                              {(
+                                e.review.reduce(
+                                  (a, b) => a + b.p_review_star,
+                                  0
+                                ) / e.review.length
+                              ).toFixed(1)}
                             </p>
                           </div>
                         ) : (

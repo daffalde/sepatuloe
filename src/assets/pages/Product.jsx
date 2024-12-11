@@ -5,7 +5,8 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 import "../style/product.css";
 import { formatCurrency } from "../components/Currency";
-import { Query } from "appwrite";
+import { ID, Query } from "appwrite";
+import Cookies from "js-cookie";
 
 export default function Product() {
   const param = useParams();
@@ -61,13 +62,51 @@ export default function Product() {
   const [inputError, setInputError] = useState();
 
   //   input cart
-  function handleCart() {
+  async function handleCart() {
     if (!color || !size) {
       setInputError("*You must input the color & size");
     } else {
       console.log(color);
       console.log(size);
       console.log(quantity);
+      setLoading(true);
+      try {
+        const cekCart = await database.listDocuments(
+          import.meta.env.VITE_APPWRITE_DATABASE,
+          import.meta.env.VITE_APPWRITE_CART
+        );
+        const filter = cekCart.documents.filter(
+          (e) => e.user.$id === Cookies.get("id")
+        );
+        const existingCart = filter.find(
+          (e) => e.cart_color === color && e.cart_size === size
+        );
+        if (existingCart) {
+          await database.updateDocument(
+            import.meta.env.VITE_APPWRITE_DATABASE,
+            import.meta.env.VITE_APPWRITE_CART,
+            existingCart.$id,
+            { cart_quanitity: existingCart.cart_quanitity + quantity }
+          );
+        } else {
+          await database.createDocument(
+            import.meta.env.VITE_APPWRITE_DATABASE,
+            import.meta.env.VITE_APPWRITE_CART,
+            ID.unique(),
+            {
+              cart_color: color,
+              cart_size: size,
+              cart_quanitity: quantity,
+              product: paramId,
+              user: Cookies.get("id"),
+            }
+          );
+        }
+      } catch (e) {
+        console.error(e);
+      } finally {
+        setLoading(false);
+      }
     }
   }
   return (
@@ -107,14 +146,14 @@ export default function Product() {
               </div>
               <div className="sp-p-desc">
                 <h3>{product.product_name}</h3>
-                {product.product_review.length !== 0 ? (
+                {product.review.length !== 0 ? (
                   <div className="s-b-i-star">
                     {Array.from({
                       length:
-                        product.product_review.reduce(
+                        product.review.reduce(
                           (a, b) => a + b.p_review_star,
                           0
-                        ) / product.product_review.length,
+                        ) / product.review.length,
                     }).map((e, i) => (
                       <img
                         width={"20px"}
@@ -124,12 +163,14 @@ export default function Product() {
                       />
                     ))}
                     <p>
-                      {product.product_review.reduce(
-                        (a, b) => a + b.p_review_star,
-                        0
-                      ) / product.product_review.length}
+                      {(
+                        product.review.reduce(
+                          (a, b) => a + b.p_review_star,
+                          0
+                        ) / product.review.length
+                      ).toFixed(1)}
                     </p>
-                    <p>({product.product_review.length})</p>
+                    <p>({product.review.length})</p>
                   </div>
                 ) : (
                   <div className="s-b-i-s-new">New!</div>
@@ -202,8 +243,8 @@ export default function Product() {
               <h5>Reviews</h5>
               <br />
               <div className="sp-r-wrap">
-                {product.product_review[0] ? (
-                  product.product_review.map((e, i) => (
+                {product.review[0] ? (
+                  product.review.map((e, i) => (
                     <div key={i} className="sp-r-w-list">
                       <img
                         style={{
@@ -278,14 +319,14 @@ export default function Product() {
                       <div className="s-b-i-wrap">
                         <h6>{e.product_name}</h6>
                         {/* star________________________ */}
-                        {e.product_review.length !== 0 ? (
+                        {e.review.length !== 0 ? (
                           <div className="s-b-i-star">
                             {Array.from({
                               length:
-                                e.product_review.reduce(
+                                e.review.reduce(
                                   (a, b) => a + b.p_review_star,
                                   0
-                                ) / e.product_review.length,
+                                ) / e.review.length,
                             }).map((e, i) => (
                               <img
                                 width={"20px"}
@@ -295,10 +336,10 @@ export default function Product() {
                               />
                             ))}
                             <p>
-                              {e.product_review.reduce(
+                              {e.review.reduce(
                                 (a, b) => a + b.p_review_star,
                                 0
-                              ) / e.product_review.length}
+                              ) / e.review.length}
                             </p>
                           </div>
                         ) : (

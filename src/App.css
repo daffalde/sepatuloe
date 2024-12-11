@@ -302,6 +302,68 @@ p {
   align-items: center;
 }
 
+.n-c-body {
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+.n-c-b-list {
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  cursor: default;
+}
+.n-c-b-list:hover {
+  background-color: white;
+}
+.n-c-b-l-a-delete {
+  padding: 5px 10px;
+  background-color: var(--red);
+  font-size: 16px;
+  color: var(--white);
+  font-weight: 600;
+  border: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.n-c-b-l-a-delete:hover {
+  background-color: var(--red-dark);
+}
+.n-c-b-l-a-quantity {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.n-c-b-l-a-quantity button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: transparent;
+  border: 2px solid var(--black-low);
+  border-radius: 3px;
+}
+.n-c-b-l-a-quantity button:hover {
+  border: 2px solid var(--black);
+}
+
+.n-c-b-l-desc {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: start;
+  padding: 0 10px;
+}
 /* profile */
 .navbar-profile {
   position: fixed;
