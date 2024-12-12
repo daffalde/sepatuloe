@@ -11,10 +11,11 @@ export default function Navbar() {
 
   //   get user
   const [userdata, setUserdata] = useState(null);
+  const [userid, setUserid] = useState();
   async function getUser() {
     try {
       const user = await account.get();
-      const cookie = Cookies.get("id");
+      setUserid(user.$id);
       const resp = await database.getDocument(
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_USER,
@@ -25,9 +26,6 @@ export default function Navbar() {
       console.error(e);
     }
   }
-  useEffect(() => {
-    getUser();
-  }, []);
 
   // get cart
   const [cartData, setCartData] = useState([]);
@@ -36,13 +34,12 @@ export default function Navbar() {
   async function getCart() {
     setLoading(true);
     try {
+      const user = await account.get();
       const resp = await database.listDocuments(
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_CART
       );
-      const filter = resp.documents.filter(
-        (e) => e.user.$id == Cookies.get("id")
-      );
+      const filter = resp.documents.filter((e) => e.user.$id == user.$id);
       let totalRaw = 0;
       let jumlahraw = 0;
       for (let i = 0; i < filter.length; i++) {
@@ -61,6 +58,7 @@ export default function Navbar() {
   }
 
   useEffect(() => {
+    getUser();
     getCart();
   }, []);
 
@@ -175,13 +173,13 @@ export default function Navbar() {
                 }
               }}
             >
-              {cdJumlah || cdJumlah == 0 ? null : (
+              {cdJumlah == 0 ? null : (
                 <div className="cart-dot">{cdJumlah}</div>
               )}
               <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
 
-            {Cookies.get("id") ? (
+            {userid ? (
               <button
                 onClick={() => {
                   setProfil(!profil);
@@ -275,7 +273,7 @@ export default function Navbar() {
         <div className="n-c-body">
           {cartData
             ? cartData
-                .filter((e) => e.user.$id == Cookies.get("id"))
+                .filter((e) => e.user.$id == userid)
                 .map((e, i) => (
                   <div key={i} className="n-c-b-list">
                     <img

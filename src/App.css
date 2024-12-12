@@ -405,6 +405,7 @@ p {
 
 .hel {
   opacity: 30%;
+  pointer-events: none;
 }
 
 .n-c-b-l-desc {
