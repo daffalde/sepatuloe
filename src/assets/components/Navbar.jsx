@@ -173,9 +173,9 @@ export default function Navbar() {
                 }
               }}
             >
-              {cdJumlah == 0 ? null : (
+              {userid && cdJumlah !== 0 ? (
                 <div className="cart-dot">{cdJumlah}</div>
-              )}
+              ) : null}
               <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
 
