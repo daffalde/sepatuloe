@@ -25,7 +25,7 @@ export default function Login() {
   async function handleLogin(e) {
     e.preventDefault();
     setLoading(true);
-    Cookies.set("reload", "1");
+    Cookies.set("id", "1");
     try {
       await account.createEmailPasswordSession(
         email.current.value,
