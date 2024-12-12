@@ -13,11 +13,12 @@ export default function Navbar() {
   const [userdata, setUserdata] = useState(null);
   async function getUser() {
     try {
+      const user = await account.get();
       const cookie = Cookies.get("id");
       const resp = await database.getDocument(
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_USER,
-        cookie
+        user.$id
       );
       setUserdata(resp ? resp : null);
     } catch (e) {
@@ -174,7 +175,7 @@ export default function Navbar() {
                 }
               }}
             >
-              {cdJumlah == 0 ? null : (
+              {cdJumlah || cdJumlah == 0 ? null : (
                 <div className="cart-dot">{cdJumlah}</div>
               )}
               <img src="../cart.svg" alt="cart" width={"30px"} />
