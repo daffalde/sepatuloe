@@ -7,6 +7,7 @@ import { formatCurrency } from "./Currency";
 
 export default function Navbar() {
   const nav = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   //   get user
   const [userdata, setUserdata] = useState(null);
@@ -29,20 +30,32 @@ export default function Navbar() {
 
   // get cart
   const [cartData, setCartData] = useState([]);
+  const [cdTotal, setCdTotal] = useState();
+  const [cdJumlah, setCdJumlah] = useState();
   async function getCart() {
+    setLoading(true);
     try {
       const resp = await database.listDocuments(
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_CART
       );
-      console.log(resp.documents);
       const filter = resp.documents.filter(
-        (e) => e.user.$id == "6753209837b7b7bd4c19"
+        (e) => e.user.$id == Cookies.get("id")
       );
-      console.log("filter", filter);
+      let totalRaw = 0;
+      let jumlahraw = 0;
+      for (let i = 0; i < filter.length; i++) {
+        totalRaw =
+          totalRaw + filter[i].product.product_price * filter[i].cart_quanitity;
+        jumlahraw = jumlahraw + filter[i].cart_quanitity;
+      }
+      setCdTotal(totalRaw);
+      setCdJumlah(jumlahraw);
       setCartData(resp.documents);
     } catch (e) {
       console.error(e);
+    } finally {
+      setLoading(false);
     }
   }
 
@@ -67,8 +80,66 @@ export default function Navbar() {
     }
   }
 
-  // cart function
-  const [quantity, setQuantity] = useState(1);
+  // cart function________________________________
+  // delete
+  async function handleCartDelete(e) {
+    try {
+      await database.deleteDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE,
+        import.meta.env.VITE_APPWRITE_CART,
+        e
+      );
+      getCart();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  // update quantity
+  async function plusQuantity(e) {
+    try {
+      const resp = await database.getDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE,
+        import.meta.env.VITE_APPWRITE_CART,
+        e
+      );
+      await database.updateDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE,
+        import.meta.env.VITE_APPWRITE_CART,
+        e,
+        {
+          cart_quanitity: resp.cart_quanitity + 1,
+        }
+      );
+      getCart();
+    } catch (e) {
+      console.log(e);
+    }
+  }
+
+  async function minusQuantity(e) {
+    try {
+      const resp = await database.getDocument(
+        import.meta.env.VITE_APPWRITE_DATABASE,
+        import.meta.env.VITE_APPWRITE_CART,
+        e
+      );
+      if (resp.cart_quanitity > 1) {
+        await database.updateDocument(
+          import.meta.env.VITE_APPWRITE_DATABASE,
+          import.meta.env.VITE_APPWRITE_CART,
+          e,
+          {
+            cart_quanitity: resp.cart_quanitity - 1,
+          }
+        );
+      }
+
+      getCart();
+    } catch (e) {
+      console.log(e);
+    }
+  }
 
   return (
     <>
@@ -103,8 +174,12 @@ export default function Navbar() {
                 }
               }}
             >
+              {cdJumlah == 0 ? null : (
+                <div className="cart-dot">{cdJumlah}</div>
+              )}
               <img src="../cart.svg" alt="cart" width={"30px"} />
             </button>
+
             {Cookies.get("id") ? (
               <button
                 onClick={() => {
@@ -180,6 +255,11 @@ export default function Navbar() {
       ></div>
       {/* ____________________________________________________________ */}
       <div className={`navbar-cart ${cart ? "navbar-cart-on" : ""}`}>
+        {loading && (
+          <div className="loading1">
+            <img src="../loading.svg" alt="loading" />
+          </div>
+        )}
         <div className="n-c-head">
           <img
             onClick={() => setCart(false)}
@@ -201,12 +281,13 @@ export default function Navbar() {
                       style={{ borderRadius: "5px" }}
                       src={storage.getFilePreview(
                         import.meta.env.VITE_APPWRITE_BUCKET,
-                        e.product.product_detail[0].p_detail_image
+                        e.product.product_detail.find(
+                          (a) => a.p_detail_color == e.cart_color
+                        )?.p_detail_image
                       )}
                       alt="img"
                       width={"100px"}
                     />
-
                     <div className="n-c-b-l-desc">
                       <h6>{e.product.product_name}</h6>
                       <p>{formatCurrency(e.product.product_price)}</p>
@@ -216,15 +297,23 @@ export default function Navbar() {
                       </p>
                     </div>
                     <div className="n-c-b-l-action">
-                      <button className="n-c-b-l-a-delete">Delete</button>
+                      <button
+                        onClick={() => handleCartDelete(e.$id)}
+                        className="n-c-b-l-a-delete"
+                      >
+                        Delete
+                      </button>
                       <br />
                       <br />
                       <div className="n-c-b-l-a-quantity">
-                        <button>
+                        <button
+                          className={`${e.cart_quanitity == 1 ? "hel" : ""}`}
+                          onClick={() => minusQuantity(e.$id)}
+                        >
                           <img src="../minus.svg" alt="minus" width={"20px"} />
                         </button>
                         <p>{e.cart_quanitity}</p>
-                        <button>
+                        <button onClick={() => plusQuantity(e.$id)}>
                           <img src="../plus.svg" alt="plus" width={"20px"} />
                         </button>
                       </div>
@@ -233,6 +322,20 @@ export default function Navbar() {
                 ))
             : null}
         </div>
+        {cdJumlah !== 0 ? (
+          <div className="n-c-footer">
+            <span>
+              <h5>Total : </h5>
+              <h5>{formatCurrency(cdTotal)}</h5>
+            </span>
+            <span>
+              <p>Jumlah</p>
+              <p>{cdJumlah}</p>
+            </span>
+            <br />
+            <button>Buy</button>
+          </div>
+        ) : null}
       </div>
       {/* ____________________________________________________________ */}
     </>

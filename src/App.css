@@ -235,6 +235,7 @@ p {
   border: none;
   background-color: transparent;
   transition: 0.3s;
+  position: relative;
 }
 .n-menu button:first-child:hover {
   background-color: white;
@@ -252,6 +253,20 @@ p {
   border: 2px solid var(--brown);
   box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
   transition: 0.3s;
+}
+.cart-dot {
+  width: 17px;
+  height: 17px;
+  font-size: 11px;
+  background-color: var(--red);
+  position: absolute;
+  border-radius: 50%;
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  right: 0;
+  top: 0px;
 }
 
 .navbar-bg {
@@ -311,6 +326,39 @@ p {
   justify-content: start;
   align-items: center;
   gap: 10px;
+  box-shadow: -4px 4px 12px rgb(0, 0, 0, 0.2);
+}
+.n-c-footer {
+  position: absolute;
+  width: 100%;
+  height: fit-content;
+  padding: 20px;
+  bottom: 0;
+  background-color: var(--white);
+  box-shadow: 0px -4px 6px rgb(0, 0, 0, 0.2);
+}
+.n-c-footer span {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.n-c-footer button {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--brown);
+  color: var(--white);
+  border: transparent;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.n-c-footer button:hover {
+  background-color: var(--brown-1);
+}
+.n-c-footer button:active {
+  background-color: var(--brown-2);
 }
 .n-c-b-list {
   width: 100%;
@@ -355,6 +403,10 @@ p {
   border: 2px solid var(--black);
 }
 
+.hel {
+  opacity: 30%;
+}
+
 .n-c-b-l-desc {
   width: 100%;
   height: 100%;
@@ -377,6 +429,8 @@ p {
   border-radius: 5px;
   padding: 15px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 }
 .n-p-head {
   width: 100%;
@@ -386,6 +440,7 @@ p {
   align-items: center;
   gap: 10px;
   margin-bottom: 20px;
+  margin-top: -25px;
 }
 .n-p-head img {
   border: 3px solid var(--black);
@@ -441,8 +496,8 @@ p {
 }
 .n-p-close {
   position: absolute;
-  right: 0;
-  top: 0;
+  left: -13px;
+  top: -16px;
   font-size: 16px;
   font-weight: 600;
   color: var(--black-low);

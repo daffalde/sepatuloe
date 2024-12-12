@@ -106,6 +106,7 @@ export default function Product() {
         console.error(e);
       } finally {
         setLoading(false);
+        window.location.reload();
       }
     }
   }
@@ -294,6 +295,7 @@ export default function Product() {
                       product.product_category[0].p_category_name
                   )
                   .filter((e) => e.$id !== product.$id)
+                  .slice(0, 8)
                   .map((e, i) => (
                     <div
                       onClick={() =>
