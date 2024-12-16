@@ -14,6 +14,7 @@ import { Query } from "appwrite";
 import Home from "./assets/pages/Home";
 import Store from "./assets/pages/Store";
 import Product from "./assets/pages/Product";
+import Order from "./assets/pages/Order";
 
 function App() {
   async function getUser() {
@@ -84,6 +85,7 @@ function App() {
           <Route path="/" Component={Home} />
           <Route path="/store" Component={Store} />
           <Route path="/store/:id" Component={Product} />
+          <Route path="/order" Component={Order}></Route>
           <Route path="/login" Component={Login} />
           <Route path="/signup" Component={Signup} />
           <Route path="/otp" Component={Otp} />

@@ -338,10 +338,12 @@ export default function Product() {
                               />
                             ))}
                             <p>
-                              {e.review.reduce(
-                                (a, b) => a + b.p_review_star,
-                                0
-                              ) / e.review.length}
+                              {(
+                                e.review.reduce(
+                                  (a, b) => a + b.p_review_star,
+                                  0
+                                ) / e.review.length
+                              ).toFixed(1)}
                             </p>
                           </div>
                         ) : (

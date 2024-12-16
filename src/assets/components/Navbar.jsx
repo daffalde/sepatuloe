@@ -277,6 +277,7 @@ export default function Navbar() {
                 .map((e, i) => (
                   <div key={i} className="n-c-b-list">
                     <img
+                      className="n-c-b-l-img"
                       style={{ borderRadius: "5px" }}
                       src={storage.getFilePreview(
                         import.meta.env.VITE_APPWRITE_BUCKET,
@@ -285,37 +286,42 @@ export default function Navbar() {
                         )?.p_detail_image
                       )}
                       alt="img"
-                      width={"100px"}
+                      width={"80px"}
                     />
                     <div className="n-c-b-l-desc">
                       <h6>{e.product.product_name}</h6>
-                      <p>{formatCurrency(e.product.product_price)}</p>
-                      <br />
                       <p style={{ fontSize: "14px" }}>
                         {e.cart_size} | {e.cart_color}
                       </p>
                     </div>
                     <div className="n-c-b-l-action">
-                      <button
-                        onClick={() => handleCartDelete(e.$id)}
-                        className="n-c-b-l-a-delete"
-                      >
-                        Delete
-                      </button>
-                      <br />
-                      <br />
-                      <div className="n-c-b-l-a-quantity">
+                      <p className="n-c-b-l-a-p">
+                        {formatCurrency(e.product.product_price)}
+                      </p>
+                      <span>
                         <button
-                          className={`${e.cart_quanitity == 1 ? "hel" : ""}`}
-                          onClick={() => minusQuantity(e.$id)}
+                          onClick={() => handleCartDelete(e.$id)}
+                          className="n-c-b-l-a-delete"
                         >
-                          <img src="../minus.svg" alt="minus" width={"20px"} />
+                          <img src="../trash.svg" alt="trash" width={"20px"} />
                         </button>
-                        <p>{e.cart_quanitity}</p>
-                        <button onClick={() => plusQuantity(e.$id)}>
-                          <img src="../plus.svg" alt="plus" width={"20px"} />
-                        </button>
-                      </div>
+                        <div className="n-c-b-l-a-quantity">
+                          <button
+                            className={`${e.cart_quanitity == 1 ? "hel" : ""}`}
+                            onClick={() => minusQuantity(e.$id)}
+                          >
+                            <img
+                              src="../minus.svg"
+                              alt="minus"
+                              width={"20px"}
+                            />
+                          </button>
+                          <p>{e.cart_quanitity}</p>
+                          <button onClick={() => plusQuantity(e.$id)}>
+                            <img src="../plus.svg" alt="plus" width={"20px"} />
+                          </button>
+                        </div>
+                      </span>
                     </div>
                   </div>
                 ))
@@ -324,8 +330,8 @@ export default function Navbar() {
         {cdJumlah !== 0 ? (
           <div className="n-c-footer">
             <span>
-              <h5>Total : </h5>
-              <h5>{formatCurrency(cdTotal)}</h5>
+              <h6>Total : </h6>
+              <h6>{formatCurrency(cdTotal)}</h6>
             </span>
             <span>
               <p>Jumlah</p>
