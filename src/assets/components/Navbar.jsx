@@ -233,7 +233,7 @@ export default function Navbar() {
                   </span>
                 </div>
                 <div className="n-p-bottom">
-                  <button>
+                  <button onClick={() => nav("/setting")}>
                     <img src="../setting.svg" alt="setting" width={"20px"} />
                     Setting
                   </button>
@@ -277,6 +277,11 @@ export default function Navbar() {
                 .map((e, i) => (
                   <div key={i} className="n-c-b-list">
                     <img
+                      onClick={() =>
+                        window.open(
+                          `${import.meta.env.VITE_DOMAIN}store/${e.product.$id}`
+                        )
+                      }
                       className="n-c-b-l-img"
                       style={{ borderRadius: "5px" }}
                       src={storage.getFilePreview(
@@ -338,7 +343,7 @@ export default function Navbar() {
               <p>{cdJumlah}</p>
             </span>
             <br />
-            <button>Buy</button>
+            <button>Checkout</button>
           </div>
         ) : null}
       </div>

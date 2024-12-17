@@ -300,7 +300,7 @@ export default function Product() {
                     <div
                       onClick={() =>
                         window.open(
-                          `${import.meta.env.VITE_MAINURL}store/${e.$id}`
+                          `${import.meta.env.VITE_DOMAIN}store/${e.$id}`
                         )
                       }
                       key={i}

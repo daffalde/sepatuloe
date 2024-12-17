@@ -38,6 +38,7 @@
   padding-top: 10px;
   width: 40vw;
   height: fit-content;
+  padding: 10px 0;
   display: flex;
   justify-content: start;
   align-items: center;
@@ -49,9 +50,15 @@
   width: 150px;
   scroll-snap-align: start;
   border-radius: 10px;
+  transition: 0.2s;
 }
 .sp-p-i-p-list {
   border: 2px solid var(--black);
+}
+.sp-p-i-parent img:hover {
+  transform: scale(1.1);
+  margin: 0 20px;
+  transition: 0.2s;
 }
 
 /* color */
@@ -81,6 +88,7 @@
 }
 .sp-p-d-colorlist-on {
   border: 2px solid var(--black-low);
+  background-color: white;
 }
 
 /* quantity */
@@ -179,6 +187,7 @@
   background-color: white;
   border-radius: 10px;
   cursor: pointer;
+  box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
 }
 .sp-re-w-list:hover {
   text-decoration: underline;

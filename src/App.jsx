@@ -15,6 +15,7 @@ import Home from "./assets/pages/Home";
 import Store from "./assets/pages/Store";
 import Product from "./assets/pages/Product";
 import Order from "./assets/pages/Order";
+import Setting from "./assets/pages/Setting";
 
 function App() {
   async function getUser() {
@@ -90,6 +91,7 @@ function App() {
           <Route path="/signup" Component={Signup} />
           <Route path="/otp" Component={Otp} />
           <Route path="/recovery" Component={Recovery} />
+          <Route path="/setting" Component={Setting} />
         </Routes>
       </BrowserRouter>
     </>

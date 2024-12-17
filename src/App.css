@@ -308,13 +308,15 @@ p {
   transition: 0.5s;
 }
 .n-c-head {
-  background-color: var(--brown);
+  background-color: var(--white);
   width: 100%;
-  height: 80px;
-  color: var(--white);
+  height: 90px;
+  color: var(--black);
   display: flex;
   justify-content: space-between;
   align-items: center;
+  z-index: 5;
+  box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
 }
 
 .n-c-body {
@@ -326,6 +328,7 @@ p {
   justify-content: start;
   align-items: center;
   gap: 10px;
+  padding-bottom: 40px;
   box-shadow: -4px 4px 12px rgb(0, 0, 0, 0.2);
 }
 .n-c-footer {
@@ -335,7 +338,7 @@ p {
   padding: 20px;
   bottom: 0;
   background-color: var(--white);
-  box-shadow: 0px -4px 6px rgb(0, 0, 0, 0.2);
+  box-shadow: 0px -4px 6px rgb(0, 0, 0, 0.1);
 }
 .n-c-footer span {
   display: flex;
@@ -374,7 +377,13 @@ p {
   background-color: white;
 }
 .n-c-b-l-img {
+  transition: 0.2s;
+  cursor: pointer;
   box-shadow: 0 4px 6px rgb(0, 0, 0, 0.1);
+}
+.n-c-b-l-img:hover {
+  transform: scale(1.1);
+  transition: 0.2s;
 }
 .n-c-b-l-a-delete {
   padding: 3px;
@@ -543,6 +552,7 @@ p {
   display: flex;
   justify-content: center;
   align-items: center;
+  border-top: 2px solid var(--black-low);
 }
 .footer {
   width: clamp(1px, 100%, 1440px);

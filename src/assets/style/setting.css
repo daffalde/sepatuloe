@@ -1,0 +1,168 @@
+.setting {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+  justify-content: center;
+  align-items: start;
+  gap: 20px;
+}
+.s-content {
+  width: 100%;
+  height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 20px;
+  overflow: auto;
+}
+.s-nav {
+  width: 400px;
+  padding: 20px;
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  border-left: 2px solid var(--black-low);
+  border-right: 2px solid var(--black-low);
+  height: 100%;
+}
+.s-nav button {
+  width: 100%;
+  height: 35px;
+  font-size: 16px;
+  background-color: transparent;
+  border: transparent;
+  text-align: start;
+  cursor: pointer;
+  font-weight: 600;
+  color: #717171;
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 10px;
+}
+.s-nav button:hover {
+  color: var(--brown);
+}
+/* _______________________________ */
+.s-c-img-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.s-c-image {
+  position: relative;
+  width: 200px;
+  height: 200px;
+}
+.s-c-image img {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  border: 2px solid var(--black);
+}
+.s-c-image input {
+  border: 1px solid var(--black-low);
+  width: 30px;
+  height: 30px;
+  visibility: hidden;
+}
+.s-c-image input::after {
+  content: url("./camera.svg");
+  width: 45px;
+  height: 45px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 50%;
+  background-color: var(--black);
+  position: absolute;
+  border: 2px solid var(--white);
+  cursor: pointer;
+  right: 0px;
+  top: 140px;
+  visibility: visible;
+}
+.s-c-image button {
+  width: 100%;
+  height: 35px;
+  position: absolute;
+  left: 0;
+  bottom: -40px;
+  font-size: 16px;
+  background-color: transparent;
+  border: 2px solid var(--black-low);
+  border-radius: 5px;
+}
+.s-c-image button:hover {
+  border: 2px solid var(--black);
+}
+
+/* ________________________ */
+.s-c-info1 {
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.s-c-info1 span input {
+  width: 100%;
+  height: 40px;
+  font-size: 16px;
+  padding: 0 5px;
+  border: 2px solid var(--black-low);
+  border-radius: 5px;
+}
+.s-c-info1-wrap button {
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  font-size: 16px;
+  font-weight: 600;
+  background-color: var(--brown);
+  color: var(--white);
+  border: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.s-c-info1-wrap button:hover {
+  background-color: var(--brown-1);
+}
+
+/* ______________________________ */
+.s-c-info2 {
+  width: 100%;
+  height: fit-content;
+  display: grid;
+  flex-direction: column;
+  justify-content: start;
+  align-items: start;
+}
+.s-c-info2 textarea {
+  width: 100%;
+  height: 100px;
+  font-size: 16px;
+  padding: 5px;
+  border: 2px solid var(--black-low);
+  border-radius: 5px;
+  resize: none;
+  margin-bottom: 10px;
+}
+.s-c-info2 button {
+  width: 100px;
+  place-self: end;
+  height: 40px;
+  font-size: 16px;
+  color: var(--white);
+  background-color: var(--brown);
+  cursor: pointer;
+  border: transparent;
+  border-radius: 5px;
+  cursor: pointer;
+}
+.s-c-info2 button:hover {
+  background-color: var(--brown-1);
+}
