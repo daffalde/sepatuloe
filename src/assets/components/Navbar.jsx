@@ -343,7 +343,7 @@ export default function Navbar() {
               <p>{cdJumlah}</p>
             </span>
             <br />
-            <button>Checkout</button>
+            <button onClick={() => nav("/checkout")}>Checkout</button>
           </div>
         ) : null}
       </div>

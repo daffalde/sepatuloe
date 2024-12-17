@@ -27,7 +27,7 @@ export default function Test() {
   async function logout() {
     try {
       Cookies.remove("user");
-      Cookies.remove("reload");
+      Cookies.remove("id");
       await account.deleteSessions();
     } catch (e) {
       console.error(e);

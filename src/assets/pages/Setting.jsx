@@ -3,11 +3,26 @@ import Navbar from "../components/Navbar";
 import "../style/setting.css";
 import { account, database, storage } from "../components/Client";
 import { ID } from "appwrite";
+import { data, useNavigate } from "react-router-dom";
 
 export default function Setting() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [file, setFile] = useState(null);
+  const nav = useNavigate();
+
+  // cek user
+  useEffect(() => {
+    async function checking() {
+      try {
+        await account.get();
+      } catch (e) {
+        console.error(e);
+        nav("/");
+      }
+    }
+    checking();
+  }, []);
 
   async function getUser() {
     try {
@@ -17,10 +32,9 @@ export default function Setting() {
         import.meta.env.VITE_APPWRITE_USER,
         resp1.$id
       );
-      console.log(resp);
       setUser(resp);
     } catch (e) {
-      console.log(e);
+      null;
     } finally {
       setLoading(false);
     }
@@ -124,6 +138,19 @@ export default function Setting() {
     }
   }
 
+  // function signout
+  async function handleOut() {
+    try {
+      Cookies.remove("user");
+      Cookies.remove("id");
+      await account.deleteSessions();
+    } catch (e) {
+      console.error(e);
+    } finally {
+      nav("/login");
+    }
+  }
+
   return (
     <>
       <Navbar />
@@ -135,25 +162,38 @@ export default function Setting() {
           </div>
         ) : (
           <div className="setting">
-            <div className="s-nav">
-              <h6 style={{ width: "100%", marginBottom: "10px" }}>General</h6>
-              <button style={{ color: "#b17457", cursor: "default" }}>
-                <img
-                  height={"25px"}
-                  width={"25px"}
-                  src="./user-brown.svg"
-                  alt="user"
-                />
-                <p>Profile</p>
-              </button>
-              <button>
-                <img
-                  height={"25px"}
-                  width={"25px"}
-                  src="./order-grey.svg"
-                  alt="user"
-                />
-                <p>Order</p>
+            <div className="s-nav-wrap">
+              <div className="s-nav">
+                <h6 style={{ width: "100%", marginBottom: "10px" }}>General</h6>
+                <button
+                  style={{
+                    color: "#b17457",
+                    cursor: "default",
+                    borderRight: "5px solid #b17457",
+                  }}
+                >
+                  <img
+                    height={"25px"}
+                    width={"25px"}
+                    src="./user-brown.svg"
+                    alt="user"
+                  />
+                  Profile
+                </button>
+                <button>
+                  <img
+                    height={"25px"}
+                    width={"25px"}
+                    src="./order-brown.svg"
+                    style={{ filter: "grayscale(100%)" }}
+                    alt="user"
+                  />
+                  Order
+                </button>
+              </div>
+              <button onClick={handleOut} className="s-n-out">
+                <img width={"20px"} src="./signout-black.svg" alt="signout" />
+                Sign Out
               </button>
             </div>
             <div className="s-content">
