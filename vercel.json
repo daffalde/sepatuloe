@@ -1,3 +1,13 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    {
+      "source": "/app/(.*)",
+      "destination": "https://app.sandbox.midtrans.com/$1"
+    },
+    {
+      "source": "/api/(.*)",
+      "destination": "https://api.sandbox.midtrans.com/$1"
+    },
+    { "source": "/(.*)", "destination": "/" }
+  ]
 }
