@@ -39,7 +39,7 @@ export default function Navbar() {
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_CART
       );
-      const filter = resp.documents.filter((e) => e.user.$id == user.$id);
+      const filter = resp.documents.filter((e) => e.user.$id === user.$id);
       let totalRaw = 0;
       let jumlahraw = 0;
       for (let i = 0; i < filter.length; i++) {
@@ -49,7 +49,7 @@ export default function Navbar() {
       }
       setCdTotal(totalRaw);
       setCdJumlah(jumlahraw);
-      setCartData(resp.documents);
+      setCartData(filter);
     } catch (e) {
       console.error(e);
     } finally {

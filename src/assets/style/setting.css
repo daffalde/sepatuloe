@@ -49,9 +49,6 @@
   align-items: center;
   gap: 10px;
 }
-.s-nav button:last-child {
-  color: #bdbdbd;
-}
 .s-nav button p:hover {
   color: var(--brown);
 }

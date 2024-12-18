@@ -180,7 +180,10 @@ export default function Setting() {
                   />
                   Profile
                 </button>
-                <button>
+                <button
+                  style={{ color: "#bdbdbd" }}
+                  onClick={() => nav("/order")}
+                >
                   <img
                     height={"25px"}
                     width={"25px"}

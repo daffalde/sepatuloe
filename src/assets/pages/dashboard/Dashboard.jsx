@@ -2,24 +2,29 @@ import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import "../../style/dashboard.css";
 import { useEffect, useState } from "react";
-import { account, storage } from "../../components/Client";
+import { account, database, storage } from "../../components/Client";
 import User from "./User";
 import Produk from "./Produk";
+import Orders from "./Orders";
 
 export default function Dashboard() {
   const nav = useNavigate();
   // cek user
   const [user, setUser] = useState({});
   useEffect(() => {
-    try {
-      const cookie = JSON.parse(Cookies.get("user"));
-      if (cookie.user_email !== import.meta.env.VITE_ADMIN) {
-        nav("/");
+    async function gett() {
+      try {
+        const us = await account.get();
+        console.log(us);
+        setUser(us);
+        if (us.email !== import.meta.env.VITE_ADMIN) {
+          nav("/");
+        }
+      } catch (e) {
+        null;
       }
-      setUser(cookie);
-    } catch (e) {
-      nav("/");
     }
+    gett();
   }, []);
   const [select, setSelect] = useState("User");
   const [profile, setProfile] = useState(false);
@@ -28,6 +33,7 @@ export default function Dashboard() {
   async function handleLogout() {
     try {
       Cookies.remove("user");
+      Cookies.remove("id");
       await account.deleteSessions();
     } catch (e) {
       console.error(e);
@@ -62,6 +68,16 @@ export default function Dashboard() {
             <img src="./d-product.svg" alt="user" width={"20px"} />
             <p>Produk</p>
           </button>
+          <button
+            onClick={() => setSelect("Orders")}
+            style={{
+              backgroundColor: `${select === "Orders" ? "#363779" : ""}`,
+            }}
+            className="d-n-button"
+          >
+            <img src="./order-white.svg" alt="user" width={"20px"} />
+            <p>Order</p>
+          </button>
         </div>
         <div className="d-content">
           <div className="d-c-head">
@@ -85,7 +101,7 @@ export default function Dashboard() {
                 }`}
                 alt="profil"
               />
-              <p>{user.user_name || "Guest"}</p>
+              <p>{user.name || "Guest"}</p>
               <img width={"25px"} src="./d-arrowdown.svg" alt="arrow" />
             </div>
             {profile && (
@@ -109,13 +125,13 @@ export default function Dashboard() {
                     alt="profil"
                   />
                   <span>
-                    <h6>{user.user_name || "Guest"}</h6>
-                    <p>{user.user_email || "No Email"}</p>
+                    <h6>{user.name || "Guest"}</h6>
+                    <p>{user.email || "No Email"}</p>
                   </span>
                 </div>
                 <br />
                 <div className="d-c-h-p-s-button">
-                  <button>Profile</button>
+                  <button onClick={() => nav("/setting")}>Profile</button>
                   <button onClick={handleLogout}>Sign Out</button>
                 </div>
               </div>
@@ -125,6 +141,8 @@ export default function Dashboard() {
             <User />
           ) : select === "Produk" ? (
             <Produk />
+          ) : select === "Orders" ? (
+            <Orders />
           ) : null}
         </div>
       </div>

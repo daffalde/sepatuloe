@@ -33,6 +33,7 @@ export default function Test() {
       console.error(e);
     }
   }
+  console.log(JSON.parse(Cookies.get("user")));
   return (
     <>
       <div className="container">

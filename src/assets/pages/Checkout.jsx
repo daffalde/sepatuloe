@@ -5,6 +5,7 @@ import "../style/checkout.css";
 import { formatCurrency } from "../components/Currency";
 import { useNavigate } from "react-router-dom";
 import { ID } from "appwrite";
+import axios from "axios";
 
 export default function Checkout() {
   const nav = useNavigate();
@@ -76,7 +77,32 @@ export default function Checkout() {
   //   sending data
   async function sendBuy() {
     setLoading(true);
+    const now = Date.now();
     try {
+      // payment
+      const resp = await axios.post(
+        "/app/snap/v1/transactions",
+        {
+          transaction_details: {
+            order_id: now,
+            gross_amount: total + 50000,
+          },
+          credit_card: {
+            secure: true,
+          },
+          customer_details: {
+            name: "",
+          },
+        },
+        {
+          headers: {
+            Authorization: `Basic ${btoa(import.meta.env.VITE_MIDTRANS)}`,
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      // order table
       await database.createDocument(
         import.meta.env.VITE_APPWRITE_DATABASE,
         import.meta.env.VITE_APPWRITE_ORDER,
@@ -87,8 +113,18 @@ export default function Checkout() {
           order_status: "Waiting for payment",
           user: user.$id,
           product: dataproduct,
+          order_link: resp.data.redirect_url,
+          order_payid: now,
         }
       );
+
+      for (let i = 0; i < cart.length; i++) {
+        await database.deleteDocument(
+          import.meta.env.VITE_APPWRITE_DATABASE,
+          import.meta.env.VITE_APPWRITE_CART,
+          cart[i].$id
+        );
+      }
     } catch (e) {
       console.error(e);
     } finally {
