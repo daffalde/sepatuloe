@@ -47,7 +47,7 @@ export default function Checkout() {
       let aproduk = [];
       for (let i = 0; i < filter.length; i++) {
         atotal += filter[i].cart_quanitity * filter[i].product.product_price;
-        aproduk.push(...aproduk, filter[i].product.$id);
+        aproduk.push(filter[i].product.$id);
       }
       setTotal(atotal);
       setCart(filter);
@@ -129,6 +129,7 @@ export default function Checkout() {
       console.error(e);
     } finally {
       setLoading(false);
+      nav("/order");
     }
   }
   return (

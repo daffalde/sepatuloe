@@ -85,35 +85,36 @@ export default function Order() {
   // get status
   async function getSelect(e, i, j) {
     try {
-      const cekstatus1 = await axios.get(`/api/v2/${e}/status`, {
-        headers: {
-          Authorization: `Basic ${btoa(import.meta.env.VITE_MIDTRANS)}`,
-        },
-      });
-      console.log(cekstatus1);
-      if (order[i].order_status == "Waiting for payment") {
-        const cekstatus = await axios.get(`/api/v2/${e}/status`, {
+      if (order[i].order_resi !== null) {
+        await database.updateDocument(
+          import.meta.env.VITE_APPWRITE_DATABASE,
+          import.meta.env.VITE_APPWRITE_ORDER,
+          j,
+          {
+            order_status: "Deliver",
+          }
+        );
+      } else {
+        const cekstatus1 = await axios.get(`/api/v2/${e}/status`, {
           headers: {
             Authorization: `Basic ${btoa(import.meta.env.VITE_MIDTRANS)}`,
           },
         });
-        console.log(cekstatus);
-        if (cekstatus.data.status_code === "200") {
-          await database.updateDocument(
-            import.meta.env.VITE_APPWRITE_DATABASE,
-            import.meta.env.VITE_APPWRITE_ORDER,
-            j,
-            {
-              order_status: "Packaged",
-            }
-          );
-          if (order[i].order_resi !== null) {
+        console.log(cekstatus1);
+        if (order[i].order_status == "Waiting for payment") {
+          const cekstatus = await axios.get(`/api/v2/${e}/status`, {
+            headers: {
+              Authorization: `Basic ${btoa(import.meta.env.VITE_MIDTRANS)}`,
+            },
+          });
+          console.log(cekstatus);
+          if (cekstatus.data.status_code === "200") {
             await database.updateDocument(
               import.meta.env.VITE_APPWRITE_DATABASE,
               import.meta.env.VITE_APPWRITE_ORDER,
               j,
               {
-                order_status: "Deliver",
+                order_status: "Packaged",
               }
             );
           }
@@ -373,7 +374,6 @@ export default function Order() {
                           </button>
                         ) : e.order_status == "Deliver" ? (
                           <>
-                            <button>Track</button>
                             <button
                               onClick={() => handleDone(e.$id)}
                               style={{ backgroundColor: "green" }}

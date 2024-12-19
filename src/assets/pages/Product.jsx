@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { database, storage } from "../components/Client";
+import { account, database, storage } from "../components/Client";
 import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
@@ -71,6 +71,7 @@ export default function Product() {
       console.log(quantity);
       setLoading(true);
       try {
+        const userr = await account.get();
         const cekCart = await database.listDocuments(
           import.meta.env.VITE_APPWRITE_DATABASE,
           import.meta.env.VITE_APPWRITE_CART
@@ -104,6 +105,7 @@ export default function Product() {
         }
       } catch (e) {
         console.error(e);
+        alert("You must login!");
       } finally {
         setLoading(false);
         window.location.reload();
