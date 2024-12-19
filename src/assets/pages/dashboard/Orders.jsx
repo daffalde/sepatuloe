@@ -38,7 +38,7 @@ export default function Orders() {
         import.meta.env.VITE_APPWRITE_ORDER,
         id,
         {
-          order_status: "Retrieved",
+          order_status: "Deliver",
           order_resi: resi,
         }
       );
